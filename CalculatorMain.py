@@ -19,31 +19,56 @@ def opButtonClick(buttonText): # Function to handle button clicks
         print('Operation = ', buttonText) # Print the button text to the console
         print('Total = ', total)
 
-    if buttonText in '+':
+    if buttonText in '+-*/':
         firstNumber = total
         currentOperation = buttonText
         operationStarted = True # Set the flag to true.
+    elif buttonText == '=':
+        print(firstNumber, currentOperation, total) # Print the first number, operations and total.
+        # Making the operations work so that when you do a number plus a operations it actually does the operations.
+        if currentOperation == '+':
+            total = str(float(firstNumber) + float(total))
+        elif currentOperation == '-':
+            total = str(float(firstNumber) - float(total))
+        elif currentOperation == '*':
+            total = str(float(firstNumber) * float(total))
+        elif currentOperation == '/':
+            total = str(float(firstNumber) / float(total))
+
+    displayLabel.config(text=total)
+
+
 
 def numButtonClick(number):
     global total
+    global operationStarted
 
-    if total == '0':
+    if total == '0' or operationStarted:
         total = number # If the total is 0, replace it with the button value.
+        operationStarted= False # Reseting the flag.
     else:
         total =total+str(number) # Update the text entry string with the button value.
 
     displayLabel.config(text=total) # Update the label with the text entry value.
+
+
 
 calcWindow = tk.Tk() #create a window
 calcWindow.title("Calculator") # Title of the window
 calcWindow.geometry("300x325") # Size of the window
 calcWindow.resizable(False, False)
 
+
+
 displayLabel = tk.Label(calcWindow, text = "0", font=("Arial", 28), justify=tk.RIGHT) # Create the label for entering the numbers.
 displayLabel.grid(column=0, row=0,  columnspan=4, sticky='e') # Telling the label where it needs to be.
 
+
+
 for col in range(4):
     calcWindow.grid_columnconfigure(col, weight=1) # Make the columns expand equally
+
+
 
 # Row 1 Buttons
 clearButton = ttk.Button(calcWindow, text="\nC\n", command = lambda: opButtonClick('')) # Creating the button.
@@ -109,6 +134,7 @@ periodButton.grid(column=2, row=5) # Placing the button in a row and column.
 
 equalsButton = ttk.Button(calcWindow, text="\n=\n", command = lambda: opButtonClick('=')) # Creating the button.
 equalsButton.grid(column=3, row=5) # Placing the button in a row and column.
+
 
 
 # Execute the window
