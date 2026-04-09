@@ -19,6 +19,11 @@ def opButtonClick(buttonText): # Function to handle button clicks
         print('Operation = ', buttonText) # Print the button text to the console
         print('Total = ', total)
 
+    if buttonText in '+':
+        firstNumber = total
+        currentOperation = buttonText
+        operationStarted = True # Set the flag to true.
+
 def numButtonClick(number):
     global total
 
@@ -27,7 +32,6 @@ def numButtonClick(number):
     else:
         total =total+str(number) # Update the text entry string with the button value.
 
-    total = total+str(number)
     displayLabel.config(text=total) # Update the label with the text entry value.
 
 calcWindow = tk.Tk() #create a window
