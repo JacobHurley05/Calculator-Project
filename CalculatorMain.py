@@ -117,11 +117,13 @@ def numButtonClick(number):
     global total
     global operationStarted
     global operationFinished
+    global secondMode
 
     if (total == '0' or operationStarted) or operationFinished == True:
         total = number # If the total is 0, replace it with the button value.
         operationStarted= False # Resetting the flag.
         operationFinished= False # Resetting the flag.
+        secondMode= False # Resetting the flag.
     else:
         if not (number == '.' and '.' in total):
             total =total+str(number) # Update the text entry string with the button value.
@@ -131,6 +133,9 @@ def numButtonClick(number):
 
 calcWindow = tk.Tk() #create a window
 calcWindow.title("Calculator") # Title of the window
+
+topDisplayLabel = tk.Label(calcWindow, text = "0", font=("Arial", 28), justify=tk.RIGHT) # Create the label for entering the numbers.
+topDisplayLabel.grid(column=0, row=0,  columnspan=4, sticky='e') # Telling the label where it needs to be.
 
 
 displayLabel = tk.Label(calcWindow, text = "0", font=("Arial", 28), justify=tk.RIGHT) # Create the label for entering the numbers.
