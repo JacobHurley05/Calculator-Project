@@ -9,6 +9,7 @@ total = '0'
 firstNumber = '0'
 currentOperation = ''
 operationStarted = False # Flag to check if an operation has started.
+secondMode = False
 DEBUG = False;
 
 def opButtonClick(buttonText): # Function to handle button clicks
@@ -17,12 +18,16 @@ def opButtonClick(buttonText): # Function to handle button clicks
     global currentOperation
     global operationStarted
     global operationFinished
+    global secondMode
 
     if DEBUG:
         print('Operation = ', buttonText) # Print the button text to the console
         print('Total = ', total)
 
-    if buttonText in '+-*/':
+    if buttonText == '2nd':
+        secondMode = True # Turns secondMode on or off.
+
+    if buttonText in '+-*/%+/-':
         firstNumber = total
         currentOperation = buttonText
         operationStarted = True # Set the flag to true.
@@ -38,7 +43,17 @@ def opButtonClick(buttonText): # Function to handle button clicks
         elif currentOperation == '*':
             total = str(float(firstNumber) * float(total))
         elif currentOperation == '/':
-            total = str(float(firstNumber) / float(total))
+            if float(total) != 0:
+                total = str(float(firstNumber) / float(total))
+            else:
+                total = "Error"
+        elif currentOperation == '%':
+            total = str((float(firstNumber) / 100) * float(total))
+        elif currentOperation == '+/-':
+            if secondMode == False:
+                total = str(float(total))
+            elif secondMode == True:
+                total = str(-float(total))
 
     elif buttonText == 'Clear':
         total = '0' # Reset total to 0.
@@ -54,20 +69,39 @@ def opButtonClick(buttonText): # Function to handle button clicks
         if total == '': # Checking if total is blank.
             total = '0'
 
-    #elif buttonText == '2nd':
-
-
     elif buttonText == 'sin(x)':
-        total = str(math.sin(float(total))) # Calculate the sine of the total.
+        if secondMode == False:
+            total = str(math.sin(float(total))) # Calculate the sine of the total.
+        elif secondMode == True:
+            if -1 <= float(total) <= 1:
+                total = str(math.asin(float(total))) # Calculate the sine of the total.
+            else:
+                total = "Error"
 
     elif buttonText == 'cos(x)':
-        total = str(math.cos(float(total))) # Calculate the sine of the total.
+        if secondMode == False:
+            total = str(math.cos(float(total))) # Calculate the sine of the total.
+        elif secondMode == True:
+            if -1 <= float(total) <= 1:
+                total = str(math.acos(float(total))) # Calculate the sine of the total.
+            else:
+                total = "Error"
 
     elif buttonText == 'tan(x)':
-        total = str(math.tan(float(total))) # Calculate the sine of the total.
+        if secondMode == False:
+            total = str(math.tan(float(total))) # Calculate the sine of the total.
+        elif secondMode == True:
+            if -1 <= float(total) <= 1:
+                total = str(math.atan(float(total))) # Calculate the sine of the total.
+            else:
+                total = "Error"
 
     elif buttonText == '1/x':
         total = str(1 / float(total))
+        if float(total) != 0:
+            total = str(1 / float(total))
+        else:
+            total = "Error"
 
     elif buttonText == 'x^2':
         total = str(math.pow(float(total), 2))
@@ -95,10 +129,8 @@ def numButtonClick(number):
     displayLabel.config(text=total) # Update the label with the text entry value.
 
 
-
 calcWindow = tk.Tk() #create a window
 calcWindow.title("Calculator") # Title of the window
-
 
 
 displayLabel = tk.Label(calcWindow, text = "0", font=("Arial", 28), justify=tk.RIGHT) # Create the label for entering the numbers.
@@ -110,7 +142,6 @@ style.theme_use("clam")
 
 for col in range(4):
     calcWindow.grid_columnconfigure(col, weight=1) # Make the columns expand equally
-
 
 
 # Row 1 Buttons
@@ -192,7 +223,7 @@ plusButton = ttk.Button(calcWindow, text="\n+\n", command = lambda: opButtonClic
 plusButton.grid(column=3, row=6) # Placing the button in a row and column.
 
 # Row 5 Buttons
-plusminusButton = ttk.Button(calcWindow, text="\n+/-\n", command = lambda: numButtonClick('+/-')) # Creating the button.
+plusminusButton = ttk.Button(calcWindow, text="\n+/-\n", command = lambda: opButtonClick('+/-')) # Creating the button.
 plusminusButton.grid(column=0, row=7) # Placing the button in a row and column.
 
 zeroButton = ttk.Button(calcWindow, text="\n0\n", command = lambda: numButtonClick('0')) # Creating the button.
