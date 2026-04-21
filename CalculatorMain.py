@@ -1,5 +1,7 @@
+#Demo Video: https://youtube.com/shorts/PEYfRcS95Ow?feature=share
+
 import tkinter as tk # Has window logic
-from tkinter import ttk # Has widgets\
+from tkinter import ttk # Has widgets
 
 import math
 
